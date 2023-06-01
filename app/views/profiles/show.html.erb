@@ -1,0 +1,7 @@
+<h1>自己紹介</h1>
+<% if user_signed_in? %>
+  <h3><%= @profile.bio%></h3>
+  <%=link_to "自己紹介を編集する", controller: "profiles", action: "edit" %>
+<% else %>
+  <h3>ログインしてログインして、自己紹介文と画像を登録しましょう！</h3>
+<% end %>
