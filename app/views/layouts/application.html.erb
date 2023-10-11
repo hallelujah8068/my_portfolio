@@ -5,11 +5,33 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
   </head>
-
-  <body>
+    <header>
+      <div class="header-wrapper">
+        <h1 class="header-title">My Portfolio</h1>
+          <% if user_signed_in? %>
+            <%= button_to "ログアウト", destroy_user_session_path, { method: :delete, class: "header-logout" }%>
+          <% else %>
+            <%= link_to "ログイン", new_user_session_path, { method: :get, class: "header-login" } %> 
+        <% end %>
+      </div>
+    </header>
+    <% if flash.present? %>
+      <div class="flash">
+        <% flash.each do |key, value| %>
+          <div class="<%= key %>">
+            <%= value %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
     <%= yield %>
-  </body>
+    <footer>
+      <% if user_signed_in? %>
+        <p class="footer-title"><%= "#{current_user.name}'s portfolio site" %></p>
+      <% else %>
+        <p class="footer-title">user name's portfolio site</p>
+      <% end %>
+    </footer>
 </html>
