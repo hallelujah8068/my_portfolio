@@ -1,0 +1,24 @@
+<p class="page-title">新規登録</p>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= render "users/shared/error_messages", resource: resource %>
+
+  <div class="login-field">
+    <%= f.label :name, class: 'label' %><br />
+    <%= f.text_field :name, class: 'form', autofocus: true, autocomplete: "name" %>
+  </div>
+
+  <div class="login-field">
+    <%= f.label :email, class: 'label' %><br />
+    <%= f.email_field :email, class: 'form', autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="login-field">
+    <%= f.label :password, class: 'label' %><br />
+    <%= f.password_field :password, class: 'form', autocomplete: "new-password" %>
+  </div>
+
+  <div class="login">
+    <%= f.submit "登録する",  class: 'button-login' %>
+  </div>
+<% end %>
