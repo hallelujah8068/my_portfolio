@@ -1,0 +1,21 @@
+<p class="page-title">自己紹介を編集する</p>
+<% if @user.errors.any? %>
+  <ul id="error_explanation">
+    <% @user.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with model: @user, url: user_path(current_user), method: :put, local: true do |f| %>
+  <div class="update-field">
+    <%= f.label :introduction, "自己紹介文", class: 'label' %><br />
+    <%= f.text_area :introduction, class: 'form-area' %><br />
+    <%= f.label :introduction, "50文字以上、200文字未満で入力してください", class: 'label' %><br />
+    <%= f.label :avatar, "アバター画像", id: 'avatar-label' %><br />
+    <%= f.file_field :avatar %>
+    <div class="update">
+      <%= f.submit "自己紹介を確定する",  class: 'button-update' %>
+    </div>
+  </div>
+<% end %>
+

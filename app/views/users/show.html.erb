@@ -1,0 +1,13 @@
+<div class="introduction-wrapper">
+  <% if @user.avatar.attached? %>
+    <%= image_tag @user.avatar, class: "avatar-image" %>
+  <% else %>
+    <%= image_tag 'default_avatar.png', class: "avatar-image" %>
+  <% end %>
+  <div class="introduction-right">
+    <p class="top-title">自己紹介</p>
+    <p class="introduction"><%= @user.introduction %></p>
+    <%= link_to '自己紹介を編集する', edit_user_path(current_user), class: "button-introduction" %>
+  </div>
+</div>
+
