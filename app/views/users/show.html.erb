@@ -10,4 +10,8 @@
     <%= link_to '自己紹介を編集する', edit_user_path(current_user), class: "button-introduction" %>
   </div>
 </div>
+<div class="skill-chart">
+  <p class="chart-title">学習チャート</p>
+  <%= link_to '編集する', user_skills_path(current_user), class: "button-skills" %>
+</div>
 

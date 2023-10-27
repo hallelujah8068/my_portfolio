@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   root "users#top"
   devise_for :users
   resources :users, only: [:show, :edit, :update]
-  #"users#show"
+  get '/users/:user_id/skills', to: 'skills#index', as: 'user_skills'
+  get '/users/:user_id/skills/:category/new', to: 'skills#new', as: 'new_user_skill'
+  post '/users/:user_id/skills/:category/create', to: 'skills#create', as: 'create_user_skill'
+  put '/users/:user_id/skills/:id/update', to: 'skills#update', as: 'update_user_skill'
+  delete 'users/:user_id/skills/:id', to: 'skills#destroy', as: 'delete_skill'
 
 
 

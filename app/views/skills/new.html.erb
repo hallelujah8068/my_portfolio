@@ -1,0 +1,26 @@
+<p class="page-title"><%= @category_japanese %>に項目を追加</p>
+<% if @skill.errors.any? %>
+  <ul id="error_explanation">
+    <% @skill.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+<% end %>
+<%= form_with(model: [@user, @skill], url: create_user_skill_path(user_id: @user.id, category: @category || 'default_category'), local: true) do |form| %>
+  <div class="skill-new-field">
+    <%= form.label :skill, "項目名", class: 'label' %>
+    <%= form.text_field :skill, class: "form-control", class: 'form' %>
+  </div>
+
+  <div class="skill-new-field">
+    <%= form.label :learning_time, "学習時間", class: 'label' %>
+    <%= form.number_field :learning_time, class: "form-control", step: 1, min: 1, class: 'form-number' %>
+    <%= form.label :learning_time, "分単位で入力してください", class: 'label' %>
+  </div>
+
+  <%= form.hidden_field :category, value: params[:category] %>
+
+  <div class="skill-new-submit">
+    <%= form.submit "追加する", class: "button-skill-new" %>
+  </div>
+<% end %>

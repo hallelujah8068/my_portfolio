@@ -1,8 +1,18 @@
 ja:
- activerecord:
-   models:
-     user: 'ユーザー'
-   attributes:
-     user:
-       introduction: '自己紹介文'
-       
+  activerecord:
+    models:
+      user: 'ユーザー'
+      skill: 'スキル'
+    attributes:
+      user:
+        introduction: '自己紹介文'
+      skill:
+        skill: '項目名'
+        category: 'カテゴリー'
+        learning_time: '学習時間'
+  enums:
+    skill:
+      category:
+        backend: 'バックエンド'
+        frontend: 'フロントエンド'
+        infrastructure: 'インフラ'

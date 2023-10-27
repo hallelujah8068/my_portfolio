@@ -1,0 +1,86 @@
+<div class="skill-wrapper">
+  <div class="category">
+    <div class="skill-header">
+      <div class="skill-header-right">
+        <p class="skill-title">バックエンド</p>
+      </div>
+      <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'backend'), class: "button-new-skill" %>
+    </div>
+    <div class="skill-cards">
+      <div class="card-header">
+        <p class="card-column">項目名</p>
+        <p class="card-column">学習時間</p>
+      </div>
+      <% @backend_skills.each do |skill| %>
+        <div class="skill-card" data-skill-id="<%= skill.id %>">
+            <p class="skill-name"><%= skill.skill %></p>
+            <p class="learning-time">
+              <%= number_field_tag "skills[#{skill.id}][learning_time]", skill.learning_time, min: 1, class: 'learning-time-field' %>
+            </p>
+            <div class="update-skill-field">
+              <%= button_to "学習時間を保存する", update_user_skill_path(user_id: @user.id, id: skill.id), method: :put, class: "update-learning-time" %>
+            </div>
+            <div class="delete-skill-field">
+              <%= button_to "削除する", delete_skill_path(user_id: @user.id, id: skill.id), method: :delete, class: "delete-skill" %>
+            </div>  
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="category">
+    <div class="skill-header">
+      <div class="skill-header-right">
+        <p class="skill-title">フロントエンド</p>
+      </div>
+      <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'frontend'), class: "button-new-skill" %>
+    </div>
+    <div class="skill-cards">
+      <div class="card-header">
+        <p class="card-column">項目名</p>
+        <p class="card-column">学習時間</p>
+      </div>
+      <% @frontend_skills.each do |skill| %>
+        <div class="skill-card" data-skill-id="<%= skill.id %>">
+          <p class="skill-name"><%= skill.skill %></p>
+          <p class="learning-time">
+            <%= number_field_tag "skills[#{skill.id}][learning_time]", skill.learning_time, min: 1, class: 'learning-time-field' %>
+          </p>
+          <p class="update-skill-field">
+            <button class="update-learning-time" data-skill-id="<%= skill.id %>">学習時間を保存する</button>
+          </p>
+          <p class="delete-skill-field">
+            <button class="delete-skill" data-skill-id="<%= skill.id %>">削除する</button>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="category">
+    <div class="skill-header">
+      <div class="skill-header-right">
+        <p class="skill-title">インフラ</p>
+      </div>
+      <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'infrastructure'), class: "button-new-skill" %>
+    </div>
+    <div class="skill-cards">
+      <div class="card-header">
+        <p class="card-column">項目名</p>
+        <p class="card-column">学習時間</p>
+      </div>
+      <% @infrastructure_skills.each do |skill| %>
+        <div class="skill-card" data-skill-id="<%= skill.id %>">
+          <p class="skill-name"><%= skill.skill %></p>
+          <p class="learning-time">
+            <%= number_field_tag "skills[#{skill.id}][learning_time]", skill.learning_time, min: 1, class: 'learning-time-field' %>
+          </p>
+          <p class="update-skill-field">
+            <button class="update-learning-time" data-skill-id="<%= skill.id %>">学習時間を保存する</button>
+          </p>
+          <p class="delete-skill-field">
+            <button class="delete-skill" data-skill-id="<%= skill.id %>">削除する</button>
+          </p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
