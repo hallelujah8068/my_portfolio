@@ -1,4 +1,14 @@
 <div class="skill-wrapper">
+  <% current_month = Date.today.strftime("%m").to_i %>
+  <% selected_month = params[:month].to_i || current_month %>
+  <select id="month-selector" onchange="changeMonth()">
+    <% (0..2).each do |month_ago| %>
+      <% month = current_month - month_ago %>
+      <% selected = month == selected_month ? 'selected' : nil %>
+      <option value="<%= month %>" <%= selected %>><%= "#{month}月" %></option>
+    <% end %>
+  </select>
+
   <div class="category">
     <div class="skill-header">
       <div class="skill-header-right">
@@ -13,16 +23,18 @@
       </div>
       <% @backend_skills.each do |skill| %>
         <div class="skill-card" data-skill-id="<%= skill.id %>">
-            <p class="skill-name"><%= skill.skill %></p>
+          <p class="skill-name"><%= skill.skill %></p>
+          <%= form_for skill, url: update_user_skill_path(user_id: @user.id, id: skill.id), method: :put, data: { turbo: false, skill_id: skill.id } do |f| %>
             <p class="learning-time">
-              <%= number_field_tag "skills[#{skill.id}][learning_time]", skill.learning_time, min: 1, class: 'learning-time-field' %>
+              <%= f.number_field :learning_time, min: 1, class: 'learning-time-field', id: "learning_time_#{skill.id}" %>
             </p>
             <div class="update-skill-field">
-              <%= button_to "学習時間を保存する", update_user_skill_path(user_id: @user.id, id: skill.id), method: :put, class: "update-learning-time" %>
+              <%= f.submit "学習時間を保存する", class: "update-learning-time" %>
             </div>
-            <div class="delete-skill-field">
-              <%= button_to "削除する", delete_skill_path(user_id: @user.id, id: skill.id), method: :delete, class: "delete-skill" %>
-            </div>  
+          <% end %>
+          <div class="delete-skill-field">
+            <%= button_to "削除する", delete_skill_path(user_id: @user.id, id: skill.id), method: :delete, class: "delete-skill", data: { skill_id: skill.id } %>
+          </div>  
         </div>
       <% end %>
     </div>
@@ -42,15 +54,17 @@
       <% @frontend_skills.each do |skill| %>
         <div class="skill-card" data-skill-id="<%= skill.id %>">
           <p class="skill-name"><%= skill.skill %></p>
-          <p class="learning-time">
-            <%= number_field_tag "skills[#{skill.id}][learning_time]", skill.learning_time, min: 1, class: 'learning-time-field' %>
-          </p>
-          <p class="update-skill-field">
-            <button class="update-learning-time" data-skill-id="<%= skill.id %>">学習時間を保存する</button>
-          </p>
-          <p class="delete-skill-field">
-            <button class="delete-skill" data-skill-id="<%= skill.id %>">削除する</button>
-          </p>
+          <%= form_for skill, url: update_user_skill_path(user_id: @user.id, id: skill.id), method: :put, data: { turbo: false, skill_id: skill.id } do |f| %>
+            <p class="learning-time">
+              <%= f.number_field :learning_time, min: 1, class: 'learning-time-field', id: "learning_time_#{skill.id}" %>
+            </p>
+            <div class="update-skill-field">
+              <%= f.submit "学習時間を保存する", class: "update-learning-time" %>
+            </div>
+          <% end %>
+          <div class="delete-skill-field">
+            <%= button_to "削除する", delete_skill_path(user_id: @user.id, id: skill.id), method: :delete, class: "delete-skill", data: { skill_id: skill.id } %>
+          </div>  
         </div>
       <% end %>
     </div>
@@ -70,17 +84,114 @@
       <% @infrastructure_skills.each do |skill| %>
         <div class="skill-card" data-skill-id="<%= skill.id %>">
           <p class="skill-name"><%= skill.skill %></p>
-          <p class="learning-time">
-            <%= number_field_tag "skills[#{skill.id}][learning_time]", skill.learning_time, min: 1, class: 'learning-time-field' %>
-          </p>
-          <p class="update-skill-field">
-            <button class="update-learning-time" data-skill-id="<%= skill.id %>">学習時間を保存する</button>
-          </p>
-          <p class="delete-skill-field">
-            <button class="delete-skill" data-skill-id="<%= skill.id %>">削除する</button>
-          </p>
+          <%= form_for skill, url: update_user_skill_path(user_id: @user.id, id: skill.id), method: :put, data: { turbo: false, skill_id: skill.id } do |f| %>
+            <p class="learning-time">
+              <%= f.number_field :learning_time, min: 1, class: 'learning-time-field', id: "learning_time_#{skill.id}" %>
+            </p>
+            <div class="update-skill-field">
+              <%= f.submit "学習時間を保存する", class: "update-learning-time" %>
+            </div>
+          <% end %>
+          <div class="delete-skill-field">
+            <%= button_to "削除する", delete_skill_path(user_id: @user.id, id: skill.id), method: :delete, class: "delete-skill", data: { skill_id: skill.id } %>
+          </div>  
         </div>
       <% end %>
     </div>
   </div>
+  <div id="myModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <button id="return-button" onclick="returnToIndexPage()">編集ページに戻る</button>
+    </div>
+  </div>
 </div>
+
+<script>
+  function changeMonth() {
+    const selectedMonth = document.getElementById("month-selector").value;
+    window.location.href = `<%= user_skills_path(user_id: @user.id) %>?month=${selectedMonth}`;
+  }
+
+  function returnToIndexPage() {
+    window.location.href = "<%= user_skills_path(@user) %>";
+  }
+
+  function showModal(message) {
+    var modal = document.getElementById("myModal");
+    var modalMessage = document.getElementById("modal-message");
+
+    modalMessage.innerHTML = message;
+    modal.style.display = "block";
+  }
+
+  function hideModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".update-learning-time").forEach(function (button) {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      var skillId = button.closest("form").getAttribute("data-skill-id");
+      var learningTimeField = document.getElementById("learning_time_" + skillId);
+      var inputLearningTime = learningTimeField.value;
+
+      var learningTime = inputLearningTime;
+
+      var form = new FormData();
+      form.append("skill[learning_time]", learningTime);
+
+      fetch(`/users/<%= @user.id %>/skills/${skillId}/update`, {
+        method: "PUT",
+        body: form
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          if (data.errors) {
+            // バリデーションエラーがある場合、エラーメッセージを表示
+            var errorMessage = data.errors.join('<br>');
+            showModal(errorMessage);
+          } else if (data.modal_message) {
+            // 成功メッセージがある場合、モーダルに表示
+            showModal(data.modal_message);
+          }
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    });
+  });
+});
+
+
+  document.querySelectorAll(".delete-skill").forEach(function (button) {
+    button.addEventListener("click", function (e) {
+      e.preventDefault();
+      var skillId = button.getAttribute("data-skill-id");
+      
+        // 削除アクションにリクエストを送信
+        fetch(`/users/<%= @user.id %>/skills/${skillId}`, {
+          method: "DELETE"
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (data) {
+            // サーバーレスポンスからモダルを表示
+            showModal(data.modal_message);
+          })
+          .catch(function (error) {
+            console.error(error);
+          });
+      
+    });
+  });
+
+  // returnToIndexPage 関数をここで呼び出し可能
+  document.getElementById("return-button").addEventListener("click", returnToIndexPage);
+</script>
+

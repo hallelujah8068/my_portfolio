@@ -6,21 +6,94 @@
     <% end %>
   </ul>
 <% end %>
-<%= form_with(model: [@user, @skill], url: create_user_skill_path(user_id: @user.id, category: @category || 'default_category'), local: true) do |form| %>
+<%= form_with(model: [@user, @skill], url: create_user_skill_path(user_id: @user.id, category: @category || 'default_category'), local: true, data: { skill_new_form: true }) do |form| %>
   <div class="skill-new-field">
-    <%= form.label :skill, "項目名", class: 'label' %>
-    <%= form.text_field :skill, class: "form-control", class: 'form' %>
+  <%= form.label :skill, "項目名", class: 'label', for: "skill_name" %>
+  <%= form.text_field :skill, class: "form-control", id: "skill_name", class: 'form' %>
   </div>
 
   <div class="skill-new-field">
-    <%= form.label :learning_time, "学習時間", class: 'label' %>
-    <%= form.number_field :learning_time, class: "form-control", step: 1, min: 1, class: 'form-number' %>
-    <%= form.label :learning_time, "分単位で入力してください", class: 'label' %>
+  <%= form.label :learning_time, "学習時間", class: 'label', for: "learning_time" %>
+  <%= form.number_field :learning_time, class: "form-control", step: 1, min: 1, id: "learning_time", class: 'form-number' %>
+  <%= form.label :learning_time, "分単位で入力してください", class: 'label', for: "learning_time" %>
   </div>
 
-  <%= form.hidden_field :category, value: params[:category] %>
+  <%= form.hidden_field :category, value: @category, id: "category" %>
 
   <div class="skill-new-submit">
     <%= form.submit "追加する", class: "button-skill-new" %>
   </div>
 <% end %>
+
+<div id="myModal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <p id="modal-message"></p>
+      <button id="return-button" onclick="returnToIndexPage()">編集ページに戻る</button>
+    </div>
+</div>
+
+<script>
+  function returnToIndexPage() {
+    window.location.href = "<%= user_skills_path(@user) %>";
+  }
+
+  function showModal(message) {
+    var modal = document.getElementById("myModal");
+    var modalMessage = document.getElementById("modal-message");
+
+    modalMessage.innerHTML = message;
+    modal.style.display = "block";
+  }
+
+  function hideModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+  }
+
+  // スキルを登録するフォームが送信されたときの処理
+document.addEventListener("DOMContentLoaded", function () {
+  var form = document.querySelector("[data-skill-new-form]");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    // フォームのデータを取得
+    var skillName = document.getElementById("skill_name").value;
+    var learningTime = document.getElementById("learning_time").value;
+    var category = document.getElementById("category").value;
+
+    // 新しいスキルをサーバーに送信
+    fetch(`/users/${<%= @user.id %>}/skills/${category}/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        skill: {
+          skill: skillName,
+          learning_time: learningTime,
+          category: category,
+        },
+      }),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (data) {
+        if (data.errors) {
+            // バリデーションエラーがある場合、エラーメッセージを表示
+            var errorMessage = data.errors.join('<br>');
+            showModal(errorMessage);
+          } else if (data.modal_message) {
+            // 成功メッセージがある場合、モーダルに表示
+            showModal(data.modal_message);
+          }
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  });
+});
+  // returnToIndexPage 関数をここで呼び出し可能
+  document.getElementById("return-button").addEventListener("click", returnToIndexPage);
+</script>
