@@ -23,7 +23,7 @@ class UsersController < ApplicationController
       redirect_to user_path(current_user)
     else
       flash.now[:alert] = '更新できませんでした'
-      render :edit
+      render :edit, status: :unprocessable_entity 
     end
   end
 

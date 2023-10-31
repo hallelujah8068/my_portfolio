@@ -4,4 +4,6 @@ class Skill < ApplicationRecord
 
   validates :skill, presence: true
   validates :learning_time, presence: true, numericality: { greater_than_or_equal_to: 1 }
+
+  scope :for_month, ->(month) { where("EXTRACT(MONTH FROM created_at) = ?", month) }
 end

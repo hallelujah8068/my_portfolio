@@ -1,7 +1,9 @@
 .introduction-wrapper {
   display: flex;
+  justify-content: center;
   margin-top: 200px;
-  margin-left: 254px;
+  // margin-left: 254px;
+  width: 100%;
 
   .avatar-image {
     width: 360px;
