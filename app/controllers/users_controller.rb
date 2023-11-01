@@ -7,7 +7,23 @@ class UsersController < ApplicationController
 
   def show
     @user = current_user
-    # @user.id = current_user.id
+
+    current_month = Date.today.month
+    last_month = 1.month.ago.month
+    last_last_month = 2.months.ago.month
+
+    @backend_data_current_month = @user.skills.backend.for_month(current_month).sum(:learning_time)
+    @backend_data_last_month = @user.skills.backend.for_month(last_month).sum(:learning_time)
+    @backend_data_last_last_month = @user.skills.backend.for_month(last_last_month).sum(:learning_time)
+
+    @frontend_data_current_month = @user.skills.frontend.for_month(current_month).sum(:learning_time)
+    @frontend_data_last_month = @user.skills.frontend.for_month(last_month).sum(:learning_time)
+    @frontend_data_last_last_month = @user.skills.frontend.for_month(last_last_month).sum(:learning_time)
+
+    @infrastructure_data_current_month = @user.skills.infrastructure.for_month(current_month).sum(:learning_time)
+    @infrastructure_data_last_month = @user.skills.infrastructure.for_month(last_month).sum(:learning_time)
+    @infrastructure_data_last_last_month = @user.skills.infrastructure.for_month(last_last_month).sum(:learning_time)
+
   end
 
   def edit

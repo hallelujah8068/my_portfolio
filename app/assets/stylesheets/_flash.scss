@@ -1,0 +1,59 @@
+.flash {
+  position: fixed;
+  top: 130px;
+  font-size: 12px;
+  font-weight: bold;
+  width: 100%;
+  animation: fade-in-out;
+  z-index: 1;
+  padding: 16px;
+  animation-duration: 5s;
+  text-align: center;
+  padding: 10px 0;
+  visibility: hidden;
+
+  .alert {
+    background-color: rgba(252, 206, 163, 0.988);
+    color: rgb(172, 62, 42);
+    padding: 10px 0;
+  }
+
+  .notice {
+    background-color: rgba(197, 242, 200, 0.988);
+    color: rgba(1, 73, 41, 0.944);
+    padding: 10px 0;
+  }
+}
+@-webkit-keyframes fade-in-out {
+  0% {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  50% {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  100% {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-out {
+  0% {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  50% {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  100% {
+    visibility: hidden;
+    opacity: 0;
+  }
+}
