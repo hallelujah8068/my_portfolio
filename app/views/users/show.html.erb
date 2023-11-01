@@ -1,17 +1,69 @@
-<div class="introduction-wrapper">
-  <% if @user.avatar.attached? %>
-    <%= image_tag @user.avatar, class: "avatar-image" %>
-  <% else %>
-    <%= image_tag 'default_avatar.png', class: "avatar-image" %>
-  <% end %>
-  <div class="introduction-right">
-    <p class="top-title">自己紹介</p>
-    <p class="introduction"><%= @user.introduction %></p>
-    <%= link_to '自己紹介を編集する', edit_user_path(current_user), class: "button-introduction" %>
+ <div class="profile-wrapper"> 
+  <div class="introduction-wrapper">
+    <% if @user.avatar.attached? %>
+      <%= image_tag @user.avatar, class: "avatar-image" %>
+    <% else %>
+      <%= image_tag 'default_avatar.png', class: "avatar-image" %>
+    <% end %>
+    <div class="introduction-right">
+      <p class="top-title">自己紹介</p>
+      <p class="introduction"><%= @user.introduction %></p>
+      <%= link_to '自己紹介を編集する', edit_user_path(current_user), class: "button-introduction" %>
+    </div>
+  </div>
+  <div class="skill-chart">
+    <p class="chart-title">学習チャート</p>
+    <%= link_to '編集する', user_skills_path(current_user), class: "button-skills" %>
+  </div>
+  <div class="chart-wrapper">
+    <canvas id="myChart"></canvas>
   </div>
 </div>
-<div class="skill-chart">
-  <p class="chart-title">学習チャート</p>
-  <%= link_to '編集する', user_skills_path(current_user), class: "button-skills" %>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- app/views/skills/show.html.erb -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['先々月', '先月', '今月'],
+        datasets: [
+          {
+            label: 'バックエンド',
+            data: [<%= @backend_data_last_last_month %>, <%= @backend_data_last_month %>, <%= @backend_data_current_month %>],
+            backgroundColor: 'rgba(247, 157, 157, 0.7)',
+            borderWidth: 1
+          },
+          {
+            label: 'フロントエンド',
+            data: [<%= @frontend_data_last_last_month %>, <%= @frontend_data_last_month %>, <%= @frontend_data_current_month %>],
+            backgroundColor: 'rgba(258, 188, 86, 0.7)',
+            borderWidth: 1
+          },
+          {
+            label: 'インフラ',
+            data: [<%= @infrastructure_data_last_last_month %>, <%= @infrastructure_data_last_month %>, <%= @infrastructure_data_current_month %>],
+            backgroundColor: 'rgba(252, 229, 128, 0.7)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  });
+</script>
+
+
+
+
+
 

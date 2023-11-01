@@ -11,10 +11,11 @@
   </head>
     <header>
       <div class="header-wrapper">
-        <h1 class="header-title">My Portfolio</h1>
           <% if user_signed_in? %>
+            <%= link_to "My Portfolio", user_path(current_user), class: "header-title" %> 
             <%= button_to "ログアウト", destroy_user_session_path, { method: :delete, class: "header-logout" }%>
           <% else %>
+            <h1 class="header-title">My Portfolio</h1>  
             <%= link_to "ログイン", new_user_session_path, { method: :get, class: "header-login" } %> 
         <% end %>
       </div>
