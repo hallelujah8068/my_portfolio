@@ -152,11 +152,9 @@
         })
         .then(function (data) {
           if (data.errors) {
-            // バリデーションエラーがある場合、エラーメッセージを表示
             var errorMessage = data.errors.join('<br>');
             showModal(errorMessage);
           } else if (data.modal_message) {
-            // 成功メッセージがある場合、モーダルに表示
             showModal(data.modal_message);
           }
         })
@@ -167,13 +165,10 @@
   });
 });
 
-
   document.querySelectorAll(".delete-skill").forEach(function (button) {
     button.addEventListener("click", function (e) {
       e.preventDefault();
       var skillId = button.getAttribute("data-skill-id");
-      
-        // 削除アクションにリクエストを送信
         fetch(`/users/<%= @user.id %>/skills/${skillId}`, {
           method: "DELETE"
         })
@@ -181,17 +176,14 @@
             return response.json();
           })
           .then(function (data) {
-            // サーバーレスポンスからモダルを表示
             showModal(data.modal_message);
           })
           .catch(function (error) {
             console.error(error);
-          });
-      
+          }) 
     });
   });
 
-  // returnToIndexPage 関数をここで呼び出し可能
   document.getElementById("return-button").addEventListener("click", returnToIndexPage);
 </script>
 

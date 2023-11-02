@@ -50,19 +50,16 @@
     modal.style.display = "none";
   }
 
-  // スキルを登録するフォームが送信されたときの処理
 document.addEventListener("DOMContentLoaded", function () {
   var form = document.querySelector("[data-skill-new-form]");
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    // フォームのデータを取得
     var skillName = document.getElementById("skill_name").value;
     var learningTime = document.getElementById("learning_time").value;
     var category = document.getElementById("category").value;
 
-    // 新しいスキルをサーバーに送信
     fetch(`/users/${<%= @user.id %>}/skills/${category}/create`, {
       method: "POST",
       headers: {
@@ -81,11 +78,9 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .then(function (data) {
         if (data.errors) {
-            // バリデーションエラーがある場合、エラーメッセージを表示
             var errorMessage = data.errors.join('<br>');
             showModal(errorMessage);
           } else if (data.modal_message) {
-            // 成功メッセージがある場合、モーダルに表示
             showModal(data.modal_message);
           }
       })
@@ -94,6 +89,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   });
 });
-  // returnToIndexPage 関数をここで呼び出し可能
+
   document.getElementById("return-button").addEventListener("click", returnToIndexPage);
 </script>
