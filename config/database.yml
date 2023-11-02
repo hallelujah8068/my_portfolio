@@ -13,9 +13,9 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  username: seiya
-  password: Oasis_8068
-  socket: /tmp/mysql.sock
+  # username: seiya
+  # password: Oasis_8068
+  # socket: /tmp/mysql.sock
 
 development:
   <<: *default
@@ -50,6 +50,8 @@ test:
 #
 production:
   <<: *default
-  database: portfolio_app_production
-  username: portfolio_app
-  password: <%= ENV["PORTFOLIO_APP_DATABASE_PASSWORD"] %>
+  database: <%= ENV['MYSQL_DATABASE'] %>
+  url: <%= ENV['MYSQL_URL'] %>
+  username: <%= ENV['MYSQL_USERNAME'] %>
+  password: <%= ENV['MYSQL_PASSWORD'] %>
+  host: <%= ENV['MYSQL_HOST'] %>
