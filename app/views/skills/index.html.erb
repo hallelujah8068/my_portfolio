@@ -14,7 +14,9 @@
       <div class="skill-header-right">
         <p class="skill-title">バックエンド</p>
       </div>
-      <% if selected_month.nil? || selected_month == current_month || @backend_skills.empty? %>
+      <% if selected_month == current_month %>
+        <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'backend'), class: "button-new-skill" %>
+      <% elsif selected_month != (current_month - 1) && selected_month != (current_month - 2) %>
         <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'backend'), class: "button-new-skill" %>
       <% end %>
     </div>
@@ -46,7 +48,9 @@
       <div class="skill-header-right">
         <p class="skill-title">フロントエンド</p>
       </div>
-      <% if selected_month.nil? || selected_month == current_month || @backend_skills.empty? %>
+      <% if selected_month == current_month %>
+        <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'frontend'), class: "button-new-skill" %>
+      <% elsif selected_month != (current_month - 1) && selected_month != (current_month - 2) %>
         <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'frontend'), class: "button-new-skill" %>
       <% end %>
       </div>
@@ -78,7 +82,9 @@
       <div class="skill-header-right">
         <p class="skill-title">インフラ</p>
       </div>
-      <% if selected_month.nil? || selected_month == current_month || @backend_skills.empty? %>
+      <% if selected_month == current_month %>
+        <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'infrastructure'), class: "button-new-skill" %>
+      <% elsif selected_month != (current_month - 1) && selected_month != (current_month - 2) %>
         <%= link_to "項目を追加する", new_user_skill_path(user_id: @user.id, category: 'infrastructure'), class: "button-new-skill" %>
       <% end %>
       </div>
