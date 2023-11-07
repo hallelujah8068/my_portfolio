@@ -22,8 +22,9 @@ class SkillsController < ApplicationController
     @skill = @user.skills.build(skill_params)
     @skill.category = params[:skill][:category]
     @category = @skill.category
+    @category_japanese = I18n.t("enums.skill.category.#{@category}")
     if @skill.save
-      modal_message = "#{@category}に#{@skill.skill}を#{@skill.learning_time}分で追加しました！"
+      modal_message = "#{@category_japanese}に#{@skill.skill}を#{@skill.learning_time}分で追加しました！"
       render json: { modal_message: modal_message }
     else
       render json: { errors: @skill.errors.full_messages }, status: :unprocessable_entity

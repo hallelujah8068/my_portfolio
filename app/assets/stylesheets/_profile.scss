@@ -30,7 +30,8 @@
 
     .introduction {
       margin-top: 32px;
-      height: 81px;
+      min-height: 81px;
+      height: auto;
       font-size: 18px;
       line-height: 27px;
       margin-bottom: 32px;

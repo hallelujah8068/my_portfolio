@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  root "users#top"
   devise_for :users
+  devise_scope :user do
+    get "/" => "devise/sessions#new"
+  end
   resources :users, only: [:show, :edit, :update]
   get '/users/:user_id/skills', to: 'skills#index', as: 'user_skills'
   get '/users/:user_id/skills/:category/new', to: 'skills#new', as: 'new_user_skill'
