@@ -26,17 +26,13 @@
 <% end %>
 
 <div id="myModal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <p id="modal-message"></p>
-      <button id="return-button" onclick="returnToIndexPage()">編集ページに戻る</button>
-    </div>
+  <div class="modal-content">
+    <p id="modal-message"></p>
+    <button id="return-button" onclick="returnToIndexPage()">編集ページに戻る</button>
+  </div>
 </div>
 
 <script>
-  function returnToIndexPage() {
-    window.location.href = "<%= user_skills_path(@user) %>";
-  }
-
   function showModal(message) {
     var modal = document.getElementById("myModal");
     var modalMessage = document.getElementById("modal-message");
@@ -50,45 +46,52 @@
     modal.style.display = "none";
   }
 
-document.addEventListener("DOMContentLoaded", function () {
-  var form = document.querySelector("[data-skill-new-form]");
+  document.addEventListener("DOMContentLoaded", function () {
+    var form = document.querySelector("[data-skill-new-form]");
+    var returnButton = document.getElementById("return-button");
 
-  form.addEventListener("submit", function (e) {
-    e.preventDefault();
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-    var skillName = document.getElementById("skill_name").value;
-    var learningTime = document.getElementById("learning_time").value;
-    var category = document.getElementById("category").value;
+      var skillName = document.getElementById("skill_name").value;
+      var learningTime = document.getElementById("learning_time").value;
+      var category = document.getElementById("category").value;
 
-    fetch(`/users/${<%= @user.id %>}/skills/${category}/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        skill: {
-          skill: skillName,
-          learning_time: learningTime,
-          category: category,
+      fetch(`/users/<%= @user.id %>/skills/${category}/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-      }),
-    })
-      .then(function (response) {
-        return response.json();
+        body: JSON.stringify({
+          skill: {
+            skill: skillName,
+            learning_time: learningTime,
+            category: category,
+          },
+        }),
       })
-      .then(function (data) {
-        if (data.errors) {
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          if (data.errors) {
             var errorMessage = data.errors.join('<br>');
             showModal(errorMessage);
+            returnButton.textContent = "新規登録画面に戻る";
+            returnButton.onclick = function() {
+              const currentURL = window.location.href;
+              window.location.href = currentURL;
+            };
           } else if (data.modal_message) {
             showModal(data.modal_message);
+            returnButton.onclick = function() {
+            window.location.href = "<%= user_skills_path(@user) %>";
+            };
           }
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+    });
   });
-});
-
-  document.getElementById("return-button").addEventListener("click", returnToIndexPage);
 </script>

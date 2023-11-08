@@ -126,7 +126,8 @@
   }
 
   function returnToIndexPage() {
-    window.location.href = "<%= user_skills_path(@user) %>";
+    const currentURL = window.location.href;
+    window.location.href = currentURL;
   }
 
   function showModal(message) {
